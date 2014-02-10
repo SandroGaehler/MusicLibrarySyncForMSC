@@ -2,55 +2,69 @@
 
 
 import os
+import sys
 
 
-from Song import Song
-from Playlist import Playlist
-from Library import Library, SongListSort
+#from Song import Song
+import mlsPlaylist as plst
+import mlsLibrary as lbr
+import mlsSong as sng
+import config
 
 
-
-SOURCE_LIBRARYPATH = os.path.expanduser("~") + "\\Desktop\\ml.xml"
-SOURCE_PLAYLISTFOLDER = os.path.expanduser("~") + "\\Music\\Playlists"
-SOURCE_MUSICFOLDER = os.path.expanduser("~") + "\\Music"
-DEST_MUSICFOLDER = "G:\\Music"
-DEST_PLAYLISTFOLDER = "G:\\Music\\Playlists"
-
-SPACE = 0.1     # in Gigabytes (1 GB = 1'024 MB = 1'048'576 B)
-
-
-# File Formats to copy:
-MP3 = 1
-WMA = 0
-OGG = 1
-FLAC = 0
-MP4 = 0     # AAC a.k.a. .m4a, .m4p, .mp4
-OTHERS = 0
-
+# see config.py for hard-coded parameters such as file maths, how much space
+# shall be used for the copied files, file formats to copy etc...
 
 
 def main():
+    # check if paths exist
+    if not os.path.exists(config.SOURCE_LIBRARYPATH):
+        print "Library folder does not exist!"
+    if not os.path.exists(config.SOURCE_MUSICFOLDER):
+        print "Music folder does not exist!"
+    if not os.path.exists(config.SOURCE_PLAYLISTFOLDER):
+        print "Playlist folder does not exist!"
 
+    # check if destination music folder exists - otherwise create it
+    if not os.path.exists(config.DEST_MUSICFOLDER):
+        try:
+            os.makedirs(config.DEST_MUSICFOLDER)
+        except:
+            print "something went wrong creating the destination music folder!"
+            sys.exit()
 
-    # read XML file
-    Library()
+    # check if destination playlist folder exists - otherwise create it
+    if not os.path.exists(config.DEST_PLAYLISTFOLDER):
+        try:
+            os.makedirs(config.DEST_PLAYLISTFOLDER)
+        except:
+            print "something went wrong creating the destination playlist folder!"
+            sys.exit()
+
+    # read iTunes-compatible XML library file with pyitunes
+    lbr.ReadLibrary()
 
     # sort
-    SongListSort()
+    lbr.SongListSort()
 
 
     # copy as many songs as space available
-    usedSpace = 0
-    for i in range(songList.__len__()):
-        if usedSpace + songList[i].fileSize > SPACE/1048576:
+    usedSpace = 0   # unit: kB = 1024 B
+    for i in range(config.songList.__len__()):
+        if usedSpace + config.songList[i].fileSize > config.SPACE*1048576:
             break
+
         # copy song i <---
-        usedSpace = usedSpace + songList[i].fileSize
+        # ...
+        config.songList[i].added = 1
+        usedSpace = usedSpace + config.songList[i].fileSize
+
+        print config.songList[i].trackTitle, "added, used space =", usedSpace
 
 
 
     # read existing playlists, write new ones
-    Playlist()
+    plst.Playlist()
 
 
     # done

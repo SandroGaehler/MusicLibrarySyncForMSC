@@ -5,6 +5,7 @@
 class Song():
     fileName = ""
     filePath = ""
+    fileSize = 0
 
     trackTitle = ""
     trackArtist = ""
@@ -15,12 +16,18 @@ class Song():
     added = 0
 
 
-    def __init__(self, fileName, filePath, title, artist, length, rating, playCount):
+    def __init__(self, fileName, filePath, size, title, artist, length, rating, playCount):
         self.fileName = fileName
         self.filePath = filePath
+        self.fileSize = size
+
         self.trackTitle = title
         self.trackArtist = artist
+
         self.trackLength = length
+
         self.trackRating = rating
         self.trackPlayCount = playCount
+
+        self.added = 0
 
