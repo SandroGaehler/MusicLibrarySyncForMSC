@@ -30,9 +30,9 @@ OTHERS = 0
 
 
 # Playlist conversion Look-Up-Table
-PLAYLIST_LUT = [["aaa.m3u", "rock.m3u"],
-                ["bbb.m3u", "pop.m3u"],
-                ["ccc.m3u", "BestOf.m3u"]]
+PLAYLIST_LUT = [["aaa.m3u8", "rock.m3u8"],
+                ["bbb.m3u8", "pop.m3u8"],
+                ["www.m3u8", "BestOf.m3u8"]]
 
 
 # Global variables:

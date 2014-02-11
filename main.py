@@ -55,11 +55,15 @@ def main():
             break
 
         # copy song i <---
-        # ...
+        # ... TO DO
         config.songList[i].added = 1
+        config.songList[i].fileNameNew = "" # <------------------------------------
         usedSpace = usedSpace + config.songList[i].fileSize
 
         print config.songList[i].trackTitle, "added, used space =", usedSpace
+
+        # additional feature:
+        # delete everything that was already there and
 
 
 

@@ -3,8 +3,8 @@
 # This class provides features used by songs. The temporary database is a list of Song objects
 
 class Song():
-    fileName = ""
-    filePath = ""
+    fileNameOld = ""
+    fileNameNew = ""
     fileSize = 0
 
     trackTitle = ""
@@ -16,9 +16,9 @@ class Song():
     added = 0
 
 
-    def __init__(self, fileName, filePath, size, title, artist, length, rating, playCount):
-        self.fileName = fileName
-        self.filePath = filePath
+    def __init__(self, fileNameOld, fileNameNew, size, title, artist, length, rating, playCount):
+        self.fileNameNew = fileNameNew
+        self.fileNameOld = fileNameOld
         self.fileSize = size
 
         self.trackTitle = title
