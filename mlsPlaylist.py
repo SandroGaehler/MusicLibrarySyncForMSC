@@ -11,54 +11,65 @@ import config
 import glob
 import os
 import sys
+import codecs
 
 
 def Playlist():
 
     # get a list of all playlists
     playlists = glob.glob(config.SOURCE_PLAYLISTFOLDER + "\\*.m3u*")
+    # keep only the file name
+    for (i, playlist) in enumerate(playlists):
+        (filepath, filename) = os.path.split(playlist)
+        playlists[i] = filename
 
     # Winamp fail: playlists are saved with pretty random-looking names.
     # Look up the new names in a look-up file. Playlists that are not found
     # won't be copied.
-    for playlist in playlists:
+    for oldPlaylist in playlists:
+        newPlaylist = ""
         for lutPlaylist in config.PLAYLIST_LUT:
-##            print playlist
-##            print config.SOURCE_PLAYLISTFOLDER + "\\" + lutPlaylist[0]
-            if config.SOURCE_PLAYLISTFOLDER + "\\" + lutPlaylist[0] == playlist:
-                currentPlaylist = lutPlaylist[1]
-                print "Playlist name conversion: from", playlist, "to", currentPlaylist
+            print oldPlaylist
+            print lutPlaylist[0]
+            if lutPlaylist[0] == oldPlaylist:
+                newPlaylist = lutPlaylist[1]
+                print "Playlist name conversion: from", oldPlaylist, "to", newPlaylist
                 break
+
+        if newPlaylist == "":
+            print "No playlist name conversion found for", oldPlaylist
+            break
 
         # "s" as in Source_playlist
         # -------------------------
         # open source playlist
         try:
-            s = open(playlist, 'r')
+            s = codecs.open(config.SOURCE_PLAYLISTFOLDER + "\\" + oldPlaylist, 'r', encoding='UTF-8')
+##            s = open(config.SOURCE_PLAYLISTFOLDER + "\\" + oldPlaylist, 'r')
         except:
-            print "Playlist", playlist, "could not be read!"
+            print "Playlist", oldPlaylist, "could not be read!"
+            continue
 
         # "d" as in Destination_playlist
         # ------------------------------
         # check if destination playlist file already exists
         try:
-            d = open(config.DEST_PLAYLISTFOLDER + "\\" + currentPlaylist, 'r')
+            d = open(config.DEST_PLAYLISTFOLDER + "\\" + newPlaylist, 'r')
         except:
             # file does not exist, create it
-            #d.close()   # ??
-            d = open(config.DEST_PLAYLISTFOLDER + "\\" + currentPlaylist, 'w')
+            d = open(config.DEST_PLAYLISTFOLDER + "\\" + newPlaylist, 'w')
         else:
             # file already exists, delete it and create a new one
             d.close()
-            os.remove(config.DEST_PLAYLISTFOLDER + "\\" + currentPlaylist)
-            d = open(config.DEST_PLAYLISTFOLDER + "\\" + currentPlaylist, 'w')
+            os.remove(config.DEST_PLAYLISTFOLDER + "\\" + newPlaylist)
+            d = open(config.DEST_PLAYLISTFOLDER + "\\" + newPlaylist, 'w')
         # write header line
         d.write("#EXTM3U\n")
 
         # read first line, it should be '#EXTM3U'
         b = s.readline()
         print b
-        if b == '#EXTM3U':
+        if b == '#EXTM3U\r\n':
             print "EXTM3U playlist."
             extm3u = True
         else:
@@ -74,6 +85,9 @@ def Playlist():
 
             if not skipFirst:
                 b = s.readline()    # file path: strip SOURCE_MUSICFOLDER, replace it with DEST_MUSICFOLDER
+                print b
+                b = b.replace(config.SOURCE_MUSICFOLDER, config.DEST_MUSICFOLDER)
+                print b
             else:
                 skipFirst = False
 

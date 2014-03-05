@@ -13,7 +13,7 @@ import os
 
 SOURCE_LIBRARYPATH = os.path.expanduser("~") + "\\MusicLibrarySync_Source\\ml50.xml"
 SOURCE_PLAYLISTFOLDER = os.path.expanduser("~") + "\\MusicLibrarySync_Source\\Playlists"
-SOURCE_MUSICFOLDER = os.path.expanduser("~") + "\\MusicLibrarySync_Source\\Music"
+SOURCE_MUSICFOLDER = os.path.expanduser("~") + "\\Musik"
 DEST_MUSICFOLDER = os.path.expanduser("~") + "\\MusicLibrarySync_Dest\\Music"
 DEST_PLAYLISTFOLDER = os.path.expanduser("~") + "\\MusicLibrarySync_Dest\\Playlists"
 
@@ -26,7 +26,7 @@ WMA = 0
 OGG = 1
 FLAC = 0
 MP4 = 0     # AAC a.k.a. .m4a, .m4p, .mp4
-OTHERS = 0
+OTHERS = 0  # other music files, pictures, videos... you name it
 
 
 # Playlist conversion Look-Up-Table
